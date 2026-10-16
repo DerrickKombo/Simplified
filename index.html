@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simplified — Research made simple</title>
+<style>
+:root{--bg:#faf8f3;--card:#fff;--ink:#1d2a24;--mute:#5f6b65;--accent:#1f7a4d;--accent-ink:#fff;--line:#e4e0d6;--chip:#eef5ef;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121815;--card:#1b241f;--ink:#e8efe9;--mute:#9aa8a0;--accent:#4cc383;--accent-ink:#0c1a12;--line:#2b372f;--chip:#22302a}}
+:root[data-theme="dark"]{--bg:#121815;--card:#1b241f;--ink:#e8efe9;--mute:#9aa8a0;--accent:#4cc383;--accent-ink:#0c1a12;--line:#2b372f;--chip:#22302a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Georgia,"Times New Roman",serif}
+h1,h2,h3,button,input,select,textarea,.chip,nav{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font-weight:800;font-size:20px;color:var(--accent)}
+nav a{color:var(--mute);text-decoration:none;margin-left:18px;font-size:14px}
+.hero{padding:36px 0 28px}
+.hero h1{font-size:clamp(30px,6vw,46px);line-height:1.15;margin:0 0 14px}
+.hero p{font-size:18px;color:var(--mute);max-width:620px}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;padding:11px 20px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.alt{background:var(--chip);color:var(--ink)}
+section{padding:28px 0}
+h2{font-size:26px;margin:0 0 6px}
+.sub{color:var(--mute);margin:0 0 18px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.tools input{flex:1;min-width:180px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:15px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 13px;border-radius:99px;font-size:13px;cursor:pointer}
+.chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.card h3{margin:0;font-size:17px;line-height:1.3}
+.tag{font:600 12px system-ui;color:var(--accent);text-transform:uppercase;letter-spacing:.05em}
+.card p{margin:0;color:var(--mute);font-size:15px}
+.steps{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.step b{display:block;font:700 28px system-ui;color:var(--accent)}
+.plans .card.pop{border:2px solid var(--accent)}
+.price{font:700 22px system-ui}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:24px 14px;z-index:20}
+.modal.open{display:flex}
+.sheet{background:var(--card);max-width:680px;width:100%;border-radius:16px;padding:24px}
+.sheet h2{font-size:23px}
+.block{background:var(--chip);border-radius:12px;padding:12px 14px;margin:12px 0}
+.block h4{margin:0 0 4px;font:700 13px system-ui;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+form label{display:block;font:600 14px system-ui;margin:12px 0 4px}
+form input,form select,form textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:15px}
+footer{padding:30px 0;color:var(--mute);font:14px system-ui;border-top:1px solid var(--line);margin-top:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><div class="logo">Simplified</div><div><a href="#library">Library</a><a href="#how">How it works</a><a href="#plans">Plans</a></div></nav>
+
+<div class="hero">
+<h1>Research papers, explained in plain language.</h1>
+<p>Science is shaping decisions about our farms, health, water and cities, but most of it is locked behind jargon. We read the papers, you get the meaning, with a listen option for on-the-go.</p>
+<div class="row"><a class="btn" href="#library">Browse summaries</a><button class="btn alt" onclick="openReq()">Request a paper</button></div>
+</div>
+
+<section id="library">
+<h2>Library</h2>
+<p class="sub">Each summary: what was asked, what was found, why it matters locally, and what to be cautious about.</p>
+<div class="tools"><input id="q" placeholder="Search topics, e.g. flood, maize, malaria"></div>
+<div class="tools" id="cats"></div>
+<div class="grid" id="grid"></div>
+</section>
+
+<section id="how">
+<h2>How it works</h2>
+<p class="sub">A repeatable process keeps quality high and every summary honest.</p>
+<div class="steps">
+<div class="step"><b>1</b>You request a paper or pick a topic.</div>
+<div class="step"><b>2</b>We read it and check methods, sample size and limits.</div>
+<div class="step"><b>3</b>We write a plain-language brief with a local angle.</div>
+<div class="step"><b>4</b>Optionally reviewed by a subject expert, then published with audio.</div>
+</div>
+</section>
+
+<section id="plans" class="plans">
+<h2>Plans</h2>
+<p class="sub">Sample pricing to test the market. Adjust it after your first customers.</p>
+<div class="grid">
+<div class="card"><span class="tag">Free</span><div class="price">KES 0</div><p>Read all public summaries and listen to audio versions.</p></div>
+<div class="card pop"><span class="tag">Pay per paper</span><div class="price">KES 300–1,000</div><p>Send any paper and get a custom plain-language brief within 3 days.</p></div>
+<div class="card"><span class="tag">Organisations</span><div class="price">Monthly</div><p>NGOs, county offices and firms get a monthly digest on their sector.</p></div>
+</div>
+</section>
+
+<footer>Prototype by Simplified. Summaries are educational and not professional advice. Always read the original paper for decisions that matter.</footer>
+</div>
+
+<div class="modal" id="m"><div class="sheet" id="sheet"></div></div>
+
+<script>
+// ---- EDIT THESE ----
+const WHATSAPP = "254700000000";           // your number, country code first, no +
+const EMAIL = "you@example.com";
+// Add your own papers here. Samples below are placeholders to show the format.
+const PAPERS = [
+ {id:1,cat:"Environment",title:"Why some river basins flood more than others",paper:"Sample: Flood susceptibility modelling in a semi-arid basin",read:4,
+  oneline:"Slope, rainfall, soil type and distance from rivers together predict where flooding is most likely.",
+  asked:"Which parts of a basin are most likely to flood, and which factors matter most?",
+  found:"Low, flat areas near rivers with poorly draining soil and heavy rainfall had the highest risk.",
+  matters:"Helps counties decide where to build, where to plant, and where to prepare early warnings.",
+  caution:"Maps show likelihood, not certainty. Local drainage works and recent land changes may not be captured."},
+ {id:2,cat:"Agriculture",title:"Does drought-tolerant maize really pay off for smallholders?",paper:"Sample: Adoption of drought-tolerant maize varieties",read:4,
+  oneline:"Farmers using drought-tolerant seed lost less yield in dry seasons, but gains depended on seed access and timing.",
+  asked:"Do improved varieties raise and stabilise yields for small farms?",
+  found:"Yields held up better in dry years, with the biggest gain where seed was bought on time.",
+  matters:"Seed choice and planting date can matter as much as the variety itself.",
+  caution:"Results vary by region and by who was surveyed. Test on a small plot first."},
+ {id:3,cat:"Health",title:"Handwashing stations in schools: do they cut absenteeism?",paper:"Sample: School hygiene interventions and attendance",read:3,
+  oneline:"Schools with working water and soap stations saw fewer sick-days, but only when supplies were kept stocked.",
+  asked:"Does improving school hygiene reduce illness-related absences?",
+  found:"Attendance improved modestly where stations were maintained, with little change where they were not.",
+  matters:"Installing facilities is not enough; upkeep and habits drive the benefit.",
+  caution:"Absences have many causes, so some of the improvement may not come from handwashing alone."}
+];
+let cat="All",term="";
+const $=s=>document.querySelector(s);
+const cats=["All",...new Set(PAPERS.map(p=>p.cat))];
+function chips(){$("#cats").innerHTML=cats.map(c=>`<button class="chip ${c===cat?"on":""}" data-c="${c}">${c}</button>`).join("");
+ document.querySelectorAll("#cats .chip").forEach(b=>b.onclick=()=>{cat=b.dataset.c;chips();list()})}
+function list(){
+ const r=PAPERS.filter(p=>(cat==="All"||p.cat===cat)&&(p.title+p.oneline+p.cat).toLowerCase().includes(term));
+ $("#grid").innerHTML=r.length?r.map(p=>`<div class="card"><span class="tag">${p.cat} · ${p.read} min</span><h3>${p.title}</h3><p>${p.oneline}</p><div class="row" style="margin-top:6px"><button class="btn" onclick="openP(${p.id})">Read</button></div></div>`).join(""):"<p class='sub'>No matches. Try requesting this paper.</p>";}
+$("#q").oninput=e=>{term=e.target.value.toLowerCase();list()};
+function close(){speechSynthesis.cancel();$("#m").classList.remove("open")}
+$("#m").onclick=e=>{if(e.target.id==="m")close()};
+function openP(id){const p=PAPERS.find(x=>x.id===id);
+ $("#sheet").innerHTML=`<span class="tag">${p.cat}</span><h2>${p.title}</h2><p class="sub">Based on: ${p.paper}</p>
+ <div class="block"><h4>What they asked</h4>${p.asked}</div>
+ <div class="block"><h4>What they found</h4>${p.found}</div>
+ <div class="block"><h4>Why it matters locally</h4>${p.matters}</div>
+ <div class="block"><h4>Be cautious about</h4>${p.caution}</div>
+ <div class="row"><button class="btn" id="lis">▶ Listen</button><button class="btn alt" onclick="close()">Close</button></div>`;
+ $("#m").classList.add("open");
+ $("#lis").onclick=()=>{if(!("speechSynthesis" in window))return alert("Audio not supported on this browser.");
+  if(speechSynthesis.speaking){speechSynthesis.cancel();$("#lis").textContent="▶ Listen";return}
+  const u=new SpeechSynthesisUtterance(`${p.title}. What they asked: ${p.asked} What they found: ${p.found} Why it matters: ${p.matters} Be cautious: ${p.caution}`);
+  u.onend=()=>$("#lis").textContent="▶ Listen";speechSynthesis.speak(u);$("#lis").textContent="■ Stop"}}
+function openReq(){
+ $("#sheet").innerHTML=`<h2>Request a paper</h2><p class="sub">Tell us what you need explained. We reply with a quote and timeline.</p>
+ <form onsubmit="send(event)"><label>Your name</label><input id="n" required>
+ <label>Paper link or title</label><input id="l" required>
+ <label>Who is it for?</label><select id="w"><option>Myself</option><option>My organisation</option><option>Students</option><option>Farmers / community</option></select>
+ <label>Language</label><select id="g"><option>English</option><option>Kiswahili</option></select>
+ <div class="row"><button class="btn" type="submit">Send via WhatsApp</button><button class="btn alt" type="button" onclick="mail()">Send via email</button><button class="btn alt" type="button" onclick="close()">Cancel</button></div></form>`;
+ $("#m").classList.add("open")}
+function msg(){return `Hello, I'd like a paper explained.\nName: ${$("#n").value}\nPaper: ${$("#l").value}\nFor: ${$("#w").value}\nLanguage: ${$("#g").value}`}
+function send(e){e.preventDefault();window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg())}`,"_blank")}
+function mail(){if(!$("#n").value||!$("#l").value)return alert("Please fill in your name and paper.");location.href=`mailto:${EMAIL}?subject=${encodeURIComponent("Paper request")}&body=${encodeURIComponent(msg())}`}
+chips();list();
+</script>
+</body>
+</html>
